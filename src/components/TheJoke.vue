@@ -1,10 +1,18 @@
 <template>
-	<div class="alert alert-info">
-		<VBtn></VBtn>
+	<div class="alert alert-info alert-margin">
+		<VBtn
+			colorType="primary"
+			@handler="addJokesAction"
+			class="add-joke"
+		>
+			{{ isAddedText }}
+		</VBtn>
 		<h1 class="text-danger" :class="{'green': getRandomJoke.isAdded}">The Joke</h1>
 		<p>{{ getRandomJoke.joke }}</p>
 		<p>{{ getRandomJoke.id }}</p>
-		<button class="btn btn-primary" @click="randomJokeAction">Load another one</button>
+		<VBtn @handler="randomJokeAction">
+			Load another one
+		</VBtn>
 		<div>
 			<router-link to="/list">Go to list Jokes</router-link>
 		</div>
@@ -21,20 +29,41 @@ export default {
 	},
   methods: {
     ...mapActions([
-      'randomJokeAction'
+      'randomJokeAction',
+			'addJokesAction'
     ])
   },
 	computed: {
     ...mapGetters([
       'getRandomJoke',
-      'getListJokes'
-		])
+		]),
+		isAddedText(){
+      return this.getRandomJoke.isAdded
+        ? 'This joke is already added'
+        : 'Add to Favorite'
+		}
 	}
 }
 </script>
 
-<style scoped>
-.green {
-	color: green !important;
-}
+<style>
+	.alert-margin {
+		padding-top: 3rem !important;
+	}
+
+	.add-joke {
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		font-size: 10px;
+	}
+
+	.add-joke .btn{
+		font-size: 10px;
+	}
+
+	.text-danger.green {
+		color: green !important;
+	}
+
 </style>

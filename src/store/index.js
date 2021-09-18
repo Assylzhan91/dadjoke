@@ -24,16 +24,28 @@ export default new Vuex.Store({
   mutations: {
     setJoke (state, joke) {
       state.randomJoke = joke
-   },
+    },
 
     addJoke (state, jokes) {
       let index = state.listJokes.findIndex(item =>item.id === jokes.id)
+      let jokesStorage = localStorage.getItem('jokes')
       if(index === -1) {
         state.randomJoke.isAdded = true
         state.listJokes.push(jokes)
+        localStorage.setItem('jokes', JSON.stringify(state.listJokes))
       }
     },
-
+    setLocalStorage(state){
+      let jokesStorage = localStorage.getItem('jokes')
+      if(jokesStorage){
+        state.listJokes = JSON.parse(jokesStorage)
+      }
+    },
+    removeJoke(state, id) {
+      let index = state.listJokes.findIndex((item,idx) => idx === id)
+      state.listJokes.splice(index, 1)
+      localStorage.setItem('jokes', JSON.stringify(state.listJokes))
+    }
   },
   actions: {
     async randomJokeAction ({commit, state}){
@@ -56,6 +68,12 @@ export default new Vuex.Store({
     },
     addJokesAction({commit, state}){
       commit('addJoke', state.randomJoke)
+    },
+    setLocalStorageAction({commit}){
+      commit('setLocalStorage')
+    },
+    removeJokeAction({commit}, id){
+      commit('removeJoke', id)
     }
   },
 
