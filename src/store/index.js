@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     randomJoke: null,
     loading: true,
-    listJokes: []
+    listJokes: [],
+    errorText: null
   },
   getters: {
     getRandomJoke(state){
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     getListJokes(state) {
       return state.listJokes
+    },
+    getErrorText(state) {
+      return state.errorText
     },
   },
   mutations: {
@@ -61,7 +65,7 @@ export default new Vuex.Store({
         let json = await res.json()
         commit('setJoke', json)
       }catch (e) {
-
+        state.errorText = e.message
       }finally {
         state.loading = false
       }
