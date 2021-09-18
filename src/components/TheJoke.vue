@@ -1,20 +1,25 @@
 <template>
-	<div class="alert alert-info alert-margin">
-		<VBtn
-			colorType="primary"
-			@handler="addJokesAction"
-			class="add-joke"
-		>
-			{{ isAddedText }}
-		</VBtn>
-		<h1 class="text-danger" :class="{'green': getRandomJoke.isAdded}">The Joke</h1>
-		<p>{{ getRandomJoke.joke }}</p>
-		<p>{{ getRandomJoke.id }}</p>
-		<VBtn @handler="randomJokeAction">
-			Load another one
-		</VBtn>
-		<div>
-			<router-link to="/list">Go to list Jokes</router-link>
+	<div class="alert alert-info" :class="{'alert-margin': !getErrorText}">
+		<div v-if="!getErrorText">
+			<VBtn
+				colorType="primary"
+				@handler="addJokesAction"
+				class="add-joke"
+			>
+				{{ isAddedText }}
+			</VBtn>
+			<h1 class="text-danger" :class="{'green': getRandomJoke.isAdded}">The Joke</h1>
+			<p>{{ getRandomJoke.joke }}</p>
+			<p>{{ getRandomJoke.id }}</p>
+			<VBtn @handler="randomJokeAction">
+				Load another one
+			</VBtn>
+			<div>
+				<router-link to="/list">Go to list Jokes</router-link>
+			</div>
+		</div>
+		<div v-else>
+			<h1>{{ getErrorText }}</h1>
 		</div>
 	</div>
 </template>
@@ -36,6 +41,7 @@ export default {
 	computed: {
     ...mapGetters([
       'getRandomJoke',
+      'getErrorText',
 		]),
 		isAddedText(){
       return this.getRandomJoke.isAdded

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'w-100': getErrorText}">
 		<Loader v-if="getLoading"></Loader>
 		<TheJoke v-else></TheJoke>
 	</div>
@@ -19,6 +19,7 @@ export default {
   computed: {
     ...mapGetters([
       'getLoading',
+      'getErrorText',
     ])
   },
 }

@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     randomJoke: null,
     loading: true,
-    listJokes: []
+    listJokes: [],
+    errorText: null
   },
   getters: {
     getRandomJoke(state){
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     getListJokes(state) {
       return state.listJokes
     },
+    getErrorText(state) {
+      return state.errorText
+    },
   },
   mutations: {
     setJoke (state, joke) {
@@ -28,7 +32,6 @@ export default new Vuex.Store({
 
     addJoke (state, jokes) {
       let index = state.listJokes.findIndex(item =>item.id === jokes.id)
-      let jokesStorage = localStorage.getItem('jokes')
       if(index === -1) {
         state.randomJoke.isAdded = true
         state.listJokes.push(jokes)
@@ -61,7 +64,7 @@ export default new Vuex.Store({
         let json = await res.json()
         commit('setJoke', json)
       }catch (e) {
-
+        state.errorText = e.message
       }finally {
         state.loading = false
       }
